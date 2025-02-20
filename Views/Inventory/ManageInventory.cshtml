@@ -1,0 +1,62 @@
+@{
+    ViewData["Title"] = "Manage Products & Categories";
+    var model = (dynamic)Model;
+}
+
+<h2>@ViewData["Title"]</h2>
+
+
+<h3>Manage Products</h3>
+<a href="@Url.Action("AddProduct", "ProductCategory")">Add New Product</a>
+
+
+@if (model.Products != null && model.Products.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in model.Products)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.Category</td>
+                    <td>@product.Price</td>
+                    <td>@product.QuantityInStock</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No products available.</p>
+}
+
+<hr />
+
+
+<h3>Manage Categories</h3>
+<a href="@Url.Action("AddCategory", "ProductCategory")">Add New Category</a>
+
+
+@if (model.Categories != null && model.Categories.Any())
+{
+    <ul>
+        @foreach (var category in model.Categories)
+        {
+            <li>@category.Name</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No categories available.</p>
+}
+

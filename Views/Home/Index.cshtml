@@ -1,0 +1,245 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Inventory Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #425565;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4c7aaf;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+
+        nav {
+            background-color: #3b4864;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 1.1em;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #6a8bc1;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4c7aaf;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .search-bar input,
+        .search-bar select {
+            padding: 8px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .inventory-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .inventory-list li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .inventory-list li:last-child {
+            border-bottom: none;
+        }
+
+        button {
+            background-color: #4c7aaf;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+
+        button:hover {
+            background-color: #6a8bc1;
+        }
+
+        .track-orders {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .track-orders input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        #orderStatus {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        footer {
+            background-color: #3b4864;
+            color: white;
+            text-align: center;
+            padding: 8px;
+            font-size: 0.9em;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Welcome to Smart Inventory Management System</h1>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="/Inventory">Manage Inventory</a></li>
+        <li><a href="/Order">Track Orders</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <section class="section">
+        <h2>View Inventory</h2>
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="Search inventory...">
+            <button onclick="searchInventory()">Search</button>
+            <select id="filter">
+                <option value="all">Filter by Category</option>
+                <option value="electronics">Electronics</option>
+                <option value="clothing">Clothing</option>
+                <option value="home">Home Appliances</option>
+            </select>
+            <select id="sort">
+                <option value="default">Sort By</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+            </select>
+        </div>
+        <ul class="inventory-list" id="inventory">
+            <li data-category="electronics">Laptop - $999.99</li>
+            <li data-category="clothing">T-Shirt - $19.99</li>
+            <li data-category="electronics">Smart Phone - $499.99</li>
+        </ul>
+    </section>
+
+    <section class="section">
+        <h2>Track Orders</h2>
+        <p>Guest users can track their orders by entering an order ID.</p>
+        <div class="track-orders">
+            <input type="text" id="orderId" placeholder="Enter Order ID">
+            <button onclick="trackOrder()">Track</button>
+        </div>
+        <p id="orderStatus"></p>
+    </section>
+
+</div>
+
+<footer>
+    &copy; 2025 Smart Inventory Management System
+</footer>
+
+<script>
+    function trackOrder() {
+        let orderId = document.getElementById("orderId").value;
+        let orderStatus = document.getElementById("orderStatus");
+        if (orderId === "12345") {
+            orderStatus.innerText = "Order is shipped.";
+            orderStatus.style.color = "green";
+        } else {
+            orderStatus.innerText = "Order not found.";
+            orderStatus.style.color = "red";
+        }
+    }
+
+    function searchInventory() {
+        let searchQuery = document.getElementById("search").value.toLowerCase();
+        let filter = document.getElementById("filter").value;
+        let inventoryList = document.getElementById("inventory");
+        let inventoryItems = inventoryList.getElementsByTagName("li");
+
+        for (let i = 0; i < inventoryItems.length; i++) {
+            let item = inventoryItems[i];
+            let itemName = item.innerText.toLowerCase();
+            let itemCategory = item.getAttribute("data-category");
+
+            let matchesSearch = itemName.includes(searchQuery);
+            let matchesCategory = (filter === "all" || itemCategory === filter);
+
+            if (matchesSearch && matchesCategory) {
+                item.style.display = "list-item";
+            } else {
+                item.style.display = "none";
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
+
+

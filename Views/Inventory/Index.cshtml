@@ -1,0 +1,151 @@
+@model List<SmartInventory.Models.Product>
+
+@{
+    ViewData["Title"] = "Manage Inventory";
+}
+
+
+<style>
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f7f9;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    h2, h3 {
+        color: #2e3b4e;
+    }
+
+   
+    .button, .action-button {
+        background-color: #4a90e2; 
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        margin: 5px 0;
+        display: inline-block;
+        font-weight: bold;
+    }
+
+    .button:hover, .action-button:hover {
+        background-color: #357ab7; 
+    }
+
+   
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        background-color: #ffffff;
+    }
+
+    .table th, .table td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .table th {
+        background-color: #4a90e2;
+        color: white;
+    }
+
+    .table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Category List Styles */
+    .category-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .category-list li {
+        background-color: #e7f3fe;
+        margin: 5px 0;
+        padding: 8px;
+        border-radius: 3px;
+    }
+
+    .category-list li:hover {
+        background-color: #d1e9fc;
+    }
+</style>
+
+<h2>@ViewData["Title"]</h2>
+
+
+
+<a href="@Url.Action("AddProduct", "Inventory")" class="button">Add New Product</a>
+
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@(product.Category?.Name ?? "No Category")</td> 
+                    <td>@product.Price</td>
+                    <td>@product.QuantityInStock</td>
+                    <td>
+                        <a href="@Url.Action("EditProduct", "Inventory", new { id = product.Id })" class="action-button">Edit</a> |
+                        <a href="@Url.Action("DeleteProduct", "Inventory", new { id = product.Id })" class="action-button">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No products available.</p>
+}
+
+<hr />
+
+
+<h3>Manage Categories</h3>
+<a href="@Url.Action("AddCategory", "Inventory")" class="button">Add New Category</a>
+
+
+@if (ViewBag.Categories != null)
+{
+    var categories = ViewBag.Categories as IEnumerable<SmartInventory.Models.Category>;
+    if (categories != null && categories.Any())
+    {
+        <ul class="category-list">
+            @foreach (var category in categories)
+            {
+                <li>@category.Name</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No categories available.</p>
+    }
+}
+else
+{
+    <p>No categories available.</p>
+}

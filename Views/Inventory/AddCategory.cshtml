@@ -1,0 +1,15 @@
+@model SmartInventory.Models.Category
+
+@{
+    ViewData["Title"] = "Add New Category";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form method="post" asp-action="AddCategory">
+    <div>
+        <label>Name:</label>
+        <input type="text" name="Name" required />
+    </div>
+    <button type="submit">Add Category</button>
+</form>

@@ -1,0 +1,35 @@
+@model SmartInventory.Models.Product
+
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form method="post" asp-action="EditProduct">
+    <div>
+        <label>Name:</label>
+        <input type="text" name="Name" value="@Model.Name" required />
+    </div>
+    <div>
+        <label>Category:</label>
+        <select name="CategoryId" required>
+            @foreach (var category in ViewBag.Categories as List<SmartInventory.Models.Category> ?? new List<SmartInventory.Models.Category>())
+            {
+                <option value="@category.Id" 
+                        selected="@((category.Id == Model.CategoryId) ? "selected" : "")">
+                    @category.Name
+                </option>
+            }
+        </select>
+    </div>
+    <div>
+        <label>Price:</label>
+        <input type="number" name="Price" step="0.01" value="@Model.Price" required />
+    </div>
+    <div>
+        <label>Quantity In Stock:</label>
+        <input type="number" name="QuantityInStock" value="@Model.QuantityInStock" required />
+    </div>
+    <button type="submit">Save Changes</button>
+</form>
